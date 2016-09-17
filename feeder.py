@@ -1,5 +1,7 @@
 import time
 from datetime import datetime
+import os
+from socket import *
 
 # Importa o module PCA9685 do driver do controlador da Adafruit.
 import Adafruit_PCA9685
@@ -10,7 +12,7 @@ pwm = Adafruit_PCA9685.PCA9685()
 # Configura o pulso minimo e o maximo
 servo_min = 150  # Min pulse length out of 4096
 servo_max = 600  # Max pulse length out of 4096
-
+servo_med = 500
 # Helper function to make setting a servo pulse width simpler.
 def set_servo_pulse(channel, pulse):
     pulse_length = 1000000    # 1,000,000 us per second
@@ -32,15 +34,26 @@ def checkFeedTime(feeding_time):
 # Set frequency to 60hz, good for servos.
 pwm.set_pwm_freq(60)
 
-#Move o motor indefinitivamente
-print ('Press Ctrl-C to quit...')
+host = ""
+port = 5005
+buf = 1024
+addr = (host, port)
+UDPSock = socket(AF_INET, SOCK_DGRAM)
+UDPSock.bind(addr)
+print "Waiting to receive messages..."
 while True:
-    #time_start = datetime.now()
-    # Move servo on channel O between extremes.
-    # Horario	
-    pwm.set_pwm(0, 0, servo_min)
+    data  = UDPSock.recvfrom(buf)
+    print "Received message: " + data
+    #if data == "exit":
+    #    break
+    #Sleeps for one second to avoid Rpi crashes
     time.sleep(1)
-    # Anti-horario
-    #if (time_start.minute == 55)
-    pwm.set_pwm(0, 0, servo_max)
-    time.sleep(1)
+    if data=="feed":
+	pwm.set_pwm(0,0,servo_max)
+	time.sleep(1)
+	#pwm.set_pwm(0,0,servo_max)
+	pwm.set_pwm(0,0,servo_min)
+	time.sleep(1)
+    
+UDPSock.close()
+os._exit(0)
