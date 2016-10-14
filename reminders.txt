@@ -1,0 +1,2 @@
+sudo /usr/bin/Weavedfeeder13000.sh start | stop | restart
+sudo /usr/bin/Weavedssh22.sh start | stop | restart
