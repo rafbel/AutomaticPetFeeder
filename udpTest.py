@@ -30,46 +30,30 @@ def checkFeedTime(feeding_time):
 	if (datetime.now().minute == feeding_time.minute):
 		return True
 	return False
+
 # Set frequency to 60hz, good for servos.
 pwm.set_pwm_freq(60)
 
-host = ''
+host = ""
 port = 5005
-address = (host,port)
 buf = 1024
-sock = socket(AF_INET, SOCK_STREAM)
-sock.bind(address)
-sock.listen(1)
+addr = (host, port)
+UDPSock = socket(AF_INET, SOCK_DGRAM)
+UDPSock.bind(addr)
 print "Waiting to receive messages..."
-conn,addr = sock.accept()
-print 'Connection address:',addr
 while True:
-    (data,address)  = conn.recvfrom(buf)
-    print "Received message: " +  data
-    data = data.split()
+    data  = UDPSock.recvfrom(buf)
+    print "Received message: " + data
+    #if data == "exit":
+    #    break
     #Sleeps for one second to avoid Rpi crashes
     time.sleep(1)
-
-    if data:
-            
-        if data=="feed":
-	    pwm.set_pwm(0,0,servo_max)
-	    time.sleep(1)
-	    pwm.set_pwm(0,0,servo_min)
-	    time.sleep(1)
-
-        #if connection is terminated, closes socket connection and makes it available for a new one
-        elif data == "exit":
-	    sock.close()
-	    sock = socket(AF_INET,SOCK_STREAM)
-	    sock.bind((host,port))
-	    sock.listen(1)
-	    print "Waiting to receive messages..."
-	    conn,addr = sock.accept()
-        elif data[0] == "add_time":
-	    fileW = open("feed_config.txt","a")
-	    fileW.write(data[1] + "\n")
-	    fileW.close()	
+    if data=="feed":
+	pwm.set_pwm(0,0,servo_max)
+	time.sleep(1)
+	#pwm.set_pwm(0,0,servo_max)
+	pwm.set_pwm(0,0,servo_min)
+	time.sleep(1)
     
-sock.close()
+UDPSock.close()
 os._exit(0)
