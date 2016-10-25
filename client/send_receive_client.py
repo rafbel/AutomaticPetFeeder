@@ -14,10 +14,12 @@ from socket import error as socket_error
 import socket
 import sys
 import time
-from weavedConn import getConnDetails
+from connLib import getConnDetails
+userName = input("User name:") 
+password = input("Password:")
+            
 
-
-proxy,port = getConnDetails("feederPi")
+proxy,port = getConnDetails("feederPi",userName,password)
 
 
 #Checks for thrown exceptions
