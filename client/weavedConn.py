@@ -44,7 +44,7 @@ def getConnDetails(deviceName):
                                               headers=loginHeaders)
         except:
             #print ("Server not found.  Possible connection problem!")
-            return ("ServerNotFound")                                         
+            return ("ServerNotFound"),("ServerNotFound")                                          
         #print ("============================================================")
         #print (content)
 
@@ -53,12 +53,12 @@ def getConnDetails(deviceName):
             if(data["status"] != "true"):
                 #print ("Can't connect to Weaved server!")
                 #print (data["reason"])
-                return "ServerError"
+                return "ServerError","ServerError"
 
             token = data["token"]
         except KeyError:
             print ("Connection failed!")
-            return ("KeyError")
+            return ("KeyError"),("KeyError")
             
         print ("Token = " +  token)
         
@@ -124,8 +124,9 @@ def getConnDetails(deviceName):
         except KeyError:
             #print ("Key Error exception!")
             #print (content)
-            return ("KeyError")
-
+            return ("KeyError"),("KeyError")
+    return "OutputError","OutputError"
+		
 
 proxy,port = getConnDetails("feederPi")
 
@@ -136,6 +137,8 @@ elif (proxy == "ServerNotFound"):
     print ("Server not found.  Possible connection problem!")
 elif (proxy == "ServerError"):
     print ("Can't connect to Weaved server!")
+elif (proxy == "OutputError"):
+    print ("Output port is not enabled for this type of connection")
 else:
       
     # Send message via TCP connection
