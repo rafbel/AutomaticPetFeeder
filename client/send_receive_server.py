@@ -17,7 +17,7 @@ while True:
 			data = conn.recv(buf)
 			print("received: ", data)
 			if data:
-				print ('sending data back to the client')
+                		print ('sending data back to the client')
 				conn.send(data.encode('utf-8'))	
 			else:
 				print ('no more data from', addr)
