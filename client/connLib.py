@@ -14,21 +14,20 @@ from socket import error as socket_error
 import socket
 
 
-def getConnDetails(deviceName,user,password):
-    apiMethod="https://"
-    apiVersion="/v22"
-    apiServer="api.weaved.com"
-    apiKey="WeavedDemoKey$2015"
+def loginWeaved(userName,password):
+        apiMethod="https://"
+        apiVersion="/v22"
+        apiServer="api.weaved.com"
+        apiKey="WeavedDemoKey$2015"
 
-    #===============================================
-    #Login
+        #===============================================
+        #Login
 
-    if __name__ == '__main__':
+
 
         httplib2.debuglevel     = 0
         http                    = httplib2.Http()
         content_type_header     = "application/json"
-
         #userName = input("User name:") 
         #password = input("Password:")
             
@@ -61,7 +60,15 @@ def getConnDetails(deviceName,user,password):
             return ("KeyError"),("KeyError")
             
         print ("Token = " +  token)
-        
+        return token
+def findDevice(deviceName,token):
+        apiMethod="https://"
+        apiVersion="/v22"
+        apiServer="api.weaved.com"
+        apiKey="WeavedDemoKey$2015"
+        httplib2.debuglevel     = 0
+        http                    = httplib2.Http()
+        content_type_header     = "application/json"
         #===============================================
         # Procura por dispositivo/serviço TCP de alimentação
             
@@ -86,11 +93,24 @@ def getConnDetails(deviceName,user,password):
             if (data["devices"][counter]["devicealias"] == deviceName):
                 deviceUID = data["devices"][counter]["deviceaddress"]
                 print ("Device UID " + deviceUID)
+                return deviceUID
+
+        return "Nothing"
+
+        
         
         #Checar a não existencia do serviço no futuro
         
-        #===============================================
-        #Conecta ao dispositivo
+#===============================================
+#Conecta ao dispositivo
+def getAccess(token,deviceUID):
+        apiMethod="https://"
+        apiVersion="/v22"
+        apiServer="api.weaved.com"
+        apiKey="WeavedDemoKey$2015"
+        httplib2.debuglevel     = 0
+        http                    = httplib2.Http()
+        content_type_header     = "application/json"
         
         #Pega o IP publico do sender (em bytes, depois sera decodificado para uma string)
         my_ip = urlopen('http://ip.42.pl/raw').read().decode('utf-8')
@@ -116,6 +136,7 @@ def getConnDetails(deviceName,user,password):
             data = json.loads(content.decode('utf-8'))["connection"]["proxy"]
             proxy_limits = 5 + data[5:].index(':')
             proxy = data[:proxy_limits]
+            proxy = proxy[7:]
             print ("Proxy: " + proxy)
             port_limits = data[5:].index(':') + 6 - len(data)
             port = int(data[port_limits:])
@@ -125,7 +146,8 @@ def getConnDetails(deviceName,user,password):
             #print ("Key Error exception!")
             #print (content)
             return ("KeyError"),("KeyError")
-    return "OutputError","OutputError"
+
+        return 0,0
 		
     
 

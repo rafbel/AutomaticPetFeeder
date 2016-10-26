@@ -13,22 +13,19 @@ from json import dumps
 from socket import error as socket_error
 import socket
 
+apiMethod="https://"
+apiVersion="/v22"
+apiServer="api.weaved.com"
+apiKey="WeavedDemoKey$2015"
 
-def getConnDetails(deviceName):
-    apiMethod="https://"
-    apiVersion="/v22"
-    apiServer="api.weaved.com"
-    apiKey="WeavedDemoKey$2015"
+#===============================================
+#Login
 
-    #===============================================
-    #Login
-
-    if __name__ == '__main__':
-
+if __name__ == '__main__':
+        deviceName = "feederPi"
         httplib2.debuglevel     = 0
         http                    = httplib2.Http()
         content_type_header     = "application/json"
-
         userName = input("User name:") 
         password = input("Password:")
             
@@ -44,7 +41,7 @@ def getConnDetails(deviceName):
                                               headers=loginHeaders)
         except:
             #print ("Server not found.  Possible connection problem!")
-            return ("ServerNotFound"),("ServerNotFound")                                          
+            exit()                                       
         #print ("============================================================")
         #print (content)
 
@@ -53,15 +50,13 @@ def getConnDetails(deviceName):
             if(data["status"] != "true"):
                 #print ("Can't connect to Weaved server!")
                 #print (data["reason"])
-                return "ServerError","ServerError"
+                exit()
 
             token = data["token"]
         except KeyError:
             print ("Connection failed!")
-            return ("KeyError"),("KeyError")
-            
+            exit()
         print ("Token = " +  token)
-        
         #===============================================
         # Procura por dispositivo/serviço TCP de alimentação
             
@@ -88,8 +83,7 @@ def getConnDetails(deviceName):
                 print ("Device UID " + deviceUID)
         
         #Checar a não existencia do serviço no futuro
-        
-        #===============================================
+                #===============================================
         #Conecta ao dispositivo
         
         #Pega o IP publico do sender (em bytes, depois sera decodificado para uma string)
@@ -120,35 +114,10 @@ def getConnDetails(deviceName):
             port_limits = data[5:].index(':') + 6 - len(data)
             port = int(data[port_limits:])
             print("Port: " + str(port))
-            return proxy,port
         except KeyError:
             #print ("Key Error exception!")
             #print (content)
-            return ("KeyError"),("KeyError")
-    return "OutputError","OutputError"
+            exit()
+
 		
-
-proxy,port = getConnDetails("feederPi")
-
-#Checks for thrown exceptions
-if (proxy == "KeyError"):
-    print ("Key Error exception!")
-elif (proxy == "ServerNotFound"):
-    print ("Server not found.  Possible connection problem!")
-elif (proxy == "ServerError"):
-    print ("Can't connect to Weaved server!")
-elif (proxy == "OutputError"):
-    print ("Output port is not enabled for this type of connection")
-else:
-      
-    # Send message via TCP connection
-    message = "feed"
         
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    sock.connect((proxy, port))
-    sock.send(message.encode('utf-8'))
-    
-    sock.close()
-    
-
-            

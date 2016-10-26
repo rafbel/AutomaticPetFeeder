@@ -10,16 +10,21 @@ import errno
 from urllib.request import urlopen
 from json import dumps
 
-from socket import error as socket_error
-import socket
+from socket import *
 import sys
 import time
-from connLib import getConnDetails
+from connLib import *
 userName = input("User name:") 
 password = input("Password:")
+buf = 1024
             
-
-proxy,port = getConnDetails("feederPi",userName,password)
+token = loginWeaved(userName,password)
+print(token)
+UID = findDevice("feederPi",token)
+print(UID)
+proxy,port = getAccess(token,UID)
+print(proxy)
+print(port)
 
 
 #Checks for thrown exceptions
@@ -40,7 +45,7 @@ else:
 		sock.connect((proxy, port))
 		# Send data
 		message = 'feed.'
-		print >>sys.stderr, 'sending "%s"' % message
+		print ('sending "%s"' % message)
 		sock.send(message.encode('utf-8'))
 
 		# Look for the response
@@ -48,11 +53,11 @@ else:
 		amount_expected = len(message)
 		
 		while amount_received < amount_expected:
-			data = sock.recv(16)
+			data = sock.recv(buf)
 			amount_received += len(data)
-			print >>sys.stderr, 'received "%s"' % data
+			print (data.decode('utf-8'))
 			time.sleep(1)
 
 	finally:
-		print >>sys.stderr, 'closing socket'
+		print( 'closing socket')
 		sock.close()
