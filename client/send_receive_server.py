@@ -1,5 +1,5 @@
 from socket import *
-
+import time
 host = ''
 port = 5005
 address = (host,port)
@@ -12,19 +12,20 @@ conn,addr = sock.accept()
 print ('Connection address:',addr)
 while True:
 	try:
-		print >>sys.stderr, 'connection from', client_address
 		# Receive the data in small chunks and retransmit it
 		while True:
-			data = connection.recv(16)
-			print >>sys.stderr, 'received "%s"' % data
+			data = conn.recv(buf)
+			print("received: ", data)
 			if data:
-				print >>sys.stderr, 'sending data back to the client'
-				connection.send(data.encode('utf-8'))	
+				print ('sending data back to the client')
+				conn.send(data.encode('utf-8'))	
 			else:
-				print >>sys.stderr, 'no more data from', client_address
-				connection.close()
+				print ('no more data from', addr)
 				break
-      	except:
-		print ("Error!")      
+      	finally:
+		print("Closing connection")
+		conn.close()
+		conn,addr = sock.accept()
+	time.sleep(1)      
 sock.close()
 os._exit(0)
