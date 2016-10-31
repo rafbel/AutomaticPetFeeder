@@ -65,13 +65,15 @@ else:
             print (data)
             
             
-        elif (int(choice) >=2 and int(choice)<= 4):  
+        elif (int(choice) >=2 and int(choice)<= 4):
+            theTime = input("Select the time: ")
             if (choice == "2"):
-                message = "add_time"
+                message = "add_time " + theTime
             elif (choice == "3"):
-                message = "remove_time"
+                message = "remove_time " + theTime
             elif (choice == "4"):
-                message = "change_time"
+                timeNew = input("Select the new time: ")
+                message = "change_time " + theTime + " " + timeNew
             
             sock.send(message.encode('utf-8'))
             timeArray = pickle.loads(sock.recv(buf))
@@ -82,7 +84,7 @@ else:
                  timeoutCheck += 1
                  time.sleep(1)
                  timeArray = pickle.loads(sock.recv(buf))
-                 print(repr(timeArray))
+            print(repr(timeArray))
                
         elif (choice == "5"):
             message = "exit"
