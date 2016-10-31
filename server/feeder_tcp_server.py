@@ -76,7 +76,8 @@ while True:
                 
             if data[0]=="feed":
                 #feedMotion()
-                conn.send((True).encode('utf-8'))
+                conn.send(("ok").encode('utf-8'))
+		print ("Sent!")
             #if connection is terminated, closes socket connection and makes it available for a new one
             elif data == "exit":
                 break
@@ -93,7 +94,7 @@ while True:
                 #data[1] = old time ; data[2] = new time
                 timeArray = changeTime(timeArray,int(data[1]),int(data[2]))
                 conn.send(pickle.dumps(timeArray))
-        timePassed++
+        timePassed+= 1
     
 sock.close()
 os._exit(0)

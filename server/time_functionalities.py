@@ -1,3 +1,4 @@
+# coding=utf-8
 #Notes:
 #Times are defined in the HHMM format, where HH = hours and MM = minutes
 #Main functionalities for this module: addTime, removeTime, changeTime
