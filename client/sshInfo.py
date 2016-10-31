@@ -1,8 +1,14 @@
-from connLib import getConnDetails
+from socket import error as socket_error
+import socket
+import pickle
 
+from connLib import *
 
 userName = input("User name:") 
 password = input("Password:")
-            
-proxy,port = getConnDetails("feederPi",userName,password)
-print (proxy + "\n" + port)
+
+token = loginWeaved(userName,password)
+UID = findDevice("sshPi",token)
+proxy,port = getAccess(token,UID)
+
+print (str(proxy) + "\n" + str(port))

@@ -74,7 +74,7 @@ while True:
 
         if data:
                 
-            if data=="feed":
+            if data[0]=="feed":
                 #feedMotion()
                 conn.send((True).encode('utf-8'))
             #if connection is terminated, closes socket connection and makes it available for a new one
