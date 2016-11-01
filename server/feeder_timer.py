@@ -14,33 +14,21 @@ def getCurrentTime():
 
     return currentTime
 
-def checkTime(feeding_time):
-    currentTime = getCurrentTime()
-    
-    if (currentTime == feeding_time):
-        return True
-
-    return False
-
-def getNewIndex(timeArray):
+def checkTime(timeArray):
     currentTime = getCurrentTime()
     #deal with exceptions!
 
     for timeIndex,timeItem in enumerate(timeArray):
-        if (currentTime <= timeItem):
-            return timeIndex
+        if (currentTime == timeItem):
+            return True
         
-    #returns index = 0 if all the indexes have been run through the day
-    return 0
+    #returns False if it is not the time to feed
+    return False
       
 while True:
     timeArray = readFromFile()
-    timeIndex = getNewIndex(timeArray)
-    print(timeArray[timeIndex])
-    
-    if (checkTime(timeArray[timeIndex])):
-        print ("TIME TO FEED ",timeArray[timeIndex])
-        #feedMotion()
+    if (checkTime(timeArray)):
+        print("Feed time!")
 
     time.sleep(60)
         
