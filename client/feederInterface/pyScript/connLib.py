@@ -1,9 +1,10 @@
 # coding=utf-8
+from socket import socket
+import sys
 import httplib2
 import json
 import datetime
 import base64
-import sys
 import os
 import getpass
 import errno
