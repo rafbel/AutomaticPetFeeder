@@ -38,14 +38,14 @@ while True:
                 
             if data[0]=="feed":
                 #feedMotion()
-                conn.send(("ok").encode('utf-8'))
+                conn.send(("ok").encode("utf-8"))
 		print ("Sent!")
             #if connection is terminated, closes socket connection and makes it available for a new one
             elif data == "exit":
                 break
                 
             elif data[0] == "add_time":
-                timeArray = addTime(timeArray,int(data[1]))
+                timeArray = addTime(timeArray,int(data[1]))[:]
                 conn.send(pickle.dumps(timeArray))
 
             elif data[0] == "remove_time":

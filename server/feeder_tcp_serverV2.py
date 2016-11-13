@@ -6,10 +6,11 @@ import pickle
 from time_functionalities import addTime, removeTime, changeTime,readFromFile
 
 def timeString(timeArray):
-    str = ""
+    timeStr = ""
     for timeItem in timeArray:
-        str = str + str(timeItem)
-    return str
+        timeStr += str(timeItem) + " "
+    timeStr += "\r"
+    return timeStr
 
 
 
@@ -33,7 +34,8 @@ while True:
     while (timePassed <= 600):
         if (firstConn):
             firstConn = False
-            conn.send(str)
+ 	    print(timeString(timeArray))
+            conn.send(timeString(timeArray))
 
         #----------
         (data,address)  = conn.recvfrom(buf)
@@ -46,24 +48,24 @@ while True:
                 
             if data[0]=="feed":
                 #feedMotion()
-                conn.send(("ok").encode('utf-8'))
+                conn.send("ok\r")
 		print ("Sent!")
             #if connection is terminated, closes socket connection and makes it available for a new one
-            elif data == "exit":
+            elif data[0] == "exit":
                 break
                 
             elif data[0] == "add_time":
                 timeArray = addTime(timeArray,int(data[1]))
-                conn.send(pickle.dumps(timeArray))
+                conn.send(timeString(timeArray))
 
             elif data[0] == "remove_time":
                 timeArray = removeTime(timeArray,int(data[1]))
-                conn.send(pickle.dumps(timeArray))
+                conn.send(timeString(timeArray))
 
             elif data[0] == "change_time":
                 #data[1] = old time ; data[2] = new time
                 timeArray = changeTime(timeArray,int(data[1]),int(data[2]))
-                conn.send(pickle.dumps(timeArray))
+                conn.send(timeString(timeArray))
         timePassed+= 1
     
 sock.close()

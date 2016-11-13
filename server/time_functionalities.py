@@ -22,7 +22,7 @@ def writeToFile(timeArray):
     writeFile = open("feed_times.txt",'w')
 
     for timeItem in timeArray:
-        writeFile.write("%s\n" % (str(timeItem) + "\n"))
+        writeFile.write("%s\n" % (str(timeItem)))
         
     writeFile.close()
 
@@ -30,18 +30,21 @@ def writeToFile(timeArray):
 #Main functionalities:
 def addTime(timeArray,newTime):
     #adds newTime in timeArray. organizes it to be in numeric crescent order
-    if not timeArray:
+    print("start")
+    if len(timeArray) == 0:
         timeArray.append(newTime)
     else:
         foundInsert = False
         for index,currentTime in enumerate(timeArray):
             if (currentTime > newTime):
-                timeArray.insert(index,newTime)
+                newIndex = index
                 foundInsert = True
                 break
         if not foundInsert:
             timeArray.append(newTime)
-            
+	else:
+	    timeArray.insert(newIndex,newTime)
+    print ("inserted")            
     writeToFile(timeArray)
 
     return timeArray
@@ -59,9 +62,8 @@ def removeTime(timeArray,rmTime):
 
 def changeTime(timeArray,oldTime,newTime):
     try:
-        arrayIndex = timeArray.index(oldTime)
-        timeArray[arrayIndex] = newTime
-        writeToFile(timeArray)
+        timeArray.remove(oldTime)
+	timeArray = addTime(timeArray,newTime)
         
     except Exception as excp:
         print ("No element %s found \n" % oldTime)
