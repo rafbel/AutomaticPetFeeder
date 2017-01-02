@@ -24,7 +24,7 @@ class FeederController:
         pulse //= pulse_length
         pwm.set_pwm(channel, 0, pulse)
 
-    def _init:
+    def _init_:
         # Set frequency to 60hz, good for servos.
         pwm.set_pwm_freq(60)
 

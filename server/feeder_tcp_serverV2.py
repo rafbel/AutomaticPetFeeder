@@ -1,9 +1,12 @@
+# coding = utf-8
+
 import time
 from datetime import datetime
 import os
 from socket import *
 import pickle
 from time_functionalities import addTime, removeTime, changeTime,readFromFile
+from feeder_controller import FeederController
 
 def timeString(timeArray):
     timeStr = ""
@@ -16,6 +19,8 @@ def timeString(timeArray):
 
 #read from time table:
 timeArray = readFromFile()
+
+feedCon = FeederController()
 
 host = ''
 port = 5005
@@ -47,7 +52,7 @@ while True:
         if data:
                 
             if data[0]=="feed":
-                #feedMotion()
+                feedCon.feedMotion()
                 conn.send("ok\r")
 		print ("Sent!")
             #if connection is terminated, closes socket connection and makes it available for a new one
