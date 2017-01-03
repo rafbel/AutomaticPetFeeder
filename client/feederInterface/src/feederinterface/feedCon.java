@@ -37,16 +37,17 @@ import org.json.simple.JSONObject;
  */
 public class feedCon {
     
-    private String token = "";
-    private String deviceUID = "";
-    private String proxy = "";
-    private int port = 0;
-    Socket sock;
-    boolean connected = false;
-    BufferedReader in;
-    PrintWriter out;
+    private static String token = "";
+    private static String deviceUID = "";
+    private static String proxy = "";
+    private static int port = 0;
+    private static Socket sock;
+    private static boolean connected = false;
+    private static BufferedReader in;
+    private static PrintWriter out;
+    private static String[] timeArray;
     
-    public boolean login(String userName, String password){ //logs the user in the weaved service and retrieves token
+    public static boolean login(String userName, String password){ //logs the user in the weaved service and retrieves token
         try {
             String url = "https://api.weaved.com/v22/api/user/login/"+ userName + "/" + password;
             URL obj = new URL(url);
@@ -100,7 +101,7 @@ public class feedCon {
         return true;
     }
     
-    public boolean findDevice(String device){ //finds the targeted device among all other devices
+    public static boolean findDevice(String device){ //finds the targeted device among all other devices
         if (token.length() >= 1)
         {
             try {
@@ -179,7 +180,7 @@ public class feedCon {
         return false;
     }
     
-    public boolean getGateway(){ //retrieves proxy and port associated with the target device
+    public static boolean getGateway(){ //retrieves proxy and port associated with the target device
         if (token.length() >= 1 || deviceUID.length() >= 1)
         {
             try {
@@ -270,7 +271,7 @@ public class feedCon {
     public int getPort(){return port;}
     public String getProxy(){return proxy;}
     
-    public boolean connect()
+    public static boolean connect()
     {
         if (port != 0 || proxy.length() >= 1)
         {
@@ -279,18 +280,15 @@ public class feedCon {
                 
                 in = new BufferedReader(new
                     InputStreamReader(sock.getInputStream(),"UTF-8"));
-                System.out.print("Received string: '");
-                String received = "";
                 while (!in.ready()) {}
-                String line = "";
-                while ((line = in.readLine()) != null)
-                    received.concat(line);
-                System.out.println(received); // Read one line and output it    
 
-                System.out.print("'\n");
+                
+                String line = in.readLine();
+                timeArray = line.split("\\s+");
                 
                 //out = new PrintWriter(sock.getOutputStream(), true);
                 connected = true;
+                
                 
                 return true;
             } catch (IOException ex) {
@@ -301,7 +299,9 @@ public class feedCon {
         return false;
     }
     
-    public boolean close()
+    public static String[] getTimeArray() {return timeArray;}
+    
+    private boolean close()
     {
         try {
             in.close();
@@ -318,27 +318,20 @@ public class feedCon {
     
     public boolean sendFeed() //sends feed command
     {
+        
         if (connected)
         {
+           
             //Sends message to feed
             try {
+
                 out = new PrintWriter(sock.getOutputStream(), true);
                 out.print("feed");
-                
+                out.flush();
+                //System.out.println("foi");
                 //awaits reply 
-                BufferedReader in = new BufferedReader(new
-                    InputStreamReader(sock.getInputStream()));
-                System.out.print("Received string: '");
-                String received = "";
-                while (!in.ready()) {}
-                String line = "";
-                while ((line = in.readLine()) != null)
-                    received.concat(line);
-                System.out.println(received); // Read one line and output it    
+               
 
-                System.out.print("'\n");
-                //in.close();
-                
                 return true;
             } catch (IOException ex) {
                 Logger.getLogger(feedCon.class.getName()).log(Level.SEVERE, null, ex);
@@ -346,6 +339,110 @@ public class feedCon {
             }
         }
         
+        return false;
+    }
+    
+    public boolean addTime(String newTime){
+        if (connected){
+            if (!checkExists(newTime)){
+                try {
+                    out = new PrintWriter(sock.getOutputStream(), true);
+                    out.print("add_time " + newTime);
+                    out.flush(); 
+
+                    BufferedReader in = new BufferedReader(new
+                        InputStreamReader(sock.getInputStream()));
+
+                    while (!in.ready()) {}
+
+                    String line = in.readLine();
+                    timeArray = line.split("\\s+");
+
+                    return true;
+                }catch (IOException ex) {
+                    Logger.getLogger(feedCon.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
+            }
+
+        }
+        return false;
+    }
+    
+    public boolean removeTime(String oldTime){
+        if (connected){
+            try {
+                
+                out = new PrintWriter(sock.getOutputStream(), true);
+                    out.print("remove_time " + oldTime);
+                    out.flush(); 
+
+                    BufferedReader in = new BufferedReader(new
+                        InputStreamReader(sock.getInputStream()));
+
+                    while (!in.ready()) {}
+
+                    String line = in.readLine();
+                    timeArray = line.split("\\s+");
+
+                    return true;
+                }catch (IOException ex) {
+                    Logger.getLogger(feedCon.class.getName()).log(Level.SEVERE, null, ex);
+                    return false;
+                }
+        }
+        return false;
+    }
+    
+    public boolean changeTime(String oldTime, String newTime){
+        if (connected){
+            if (!checkExists(newTime)){
+                try {
+
+                        out = new PrintWriter(sock.getOutputStream(), true);
+                        out.print("change_time " + oldTime + " " + newTime);
+                        out.flush();
+
+                        BufferedReader in = new BufferedReader(new
+                            InputStreamReader(sock.getInputStream()));
+
+                        while (!in.ready()) {}
+
+                        String line = in.readLine();
+                        timeArray = line.split("\\s+");
+
+                        return true;
+                    }catch (IOException ex) {
+                        Logger.getLogger(feedCon.class.getName()).log(Level.SEVERE, null, ex);
+                        return false;
+                    }
+            }
+        }
+        return false;
+    }
+    
+    public boolean logout(){
+        if (connected){
+                try {
+                        out = new PrintWriter(sock.getOutputStream(), true);
+                        out.print("exit");
+                        out.flush();
+                        
+                        return close();
+                    }catch (IOException ex) {
+                        Logger.getLogger(feedCon.class.getName()).log(Level.SEVERE, null, ex);
+                        return false;
+                    }
+        }
+        return false;
+    }
+    
+    private boolean checkExists(String time){
+        for (String timeArray1 : timeArray) {
+            if (timeArray1.equals(time)) {
+                return true;
+            }
+        }
         return false;
     }
     
