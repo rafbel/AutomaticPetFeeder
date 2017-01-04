@@ -41,9 +41,9 @@ while True:
             firstConn = False
  	    print(timeString(timeArray))
             conn.send(timeString(timeArray))
-
-        #----------
-        (data,address)  = conn.recvfrom(buf)
+            
+	#----------
+	(data,address)  = conn.recvfrom(buf)
         print ("Received message: " +  data)
         data = data.split()
         #Sleeps for one second to avoid Rpi crashes

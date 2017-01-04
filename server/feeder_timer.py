@@ -1,6 +1,7 @@
 import datetime
 import time
 from time_functionalities import readFromFile
+from feeder_controller import FeederController
 #from feeder_tcp_server import feedMotion
 
 #import Adafruit_PCA9685
@@ -25,10 +26,11 @@ def checkTime(timeArray):
     #returns False if it is not the time to feed
     return False
       
+feedCon = FeederController()
 while True:
     timeArray = readFromFile()
     if (checkTime(timeArray)):
-        print("Feed time!")
+       feedCon.feedMotion()
 
     time.sleep(60)
         

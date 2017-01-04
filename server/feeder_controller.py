@@ -1,4 +1,5 @@
-# coding = utf-8
+#!/usr/bin/env python
+# -*- coding: utf-8 -*- 
 
 import time
 # Importa o module PCA9685 do driver do controlador da Adafruit.
@@ -24,13 +25,13 @@ class FeederController:
         pulse //= pulse_length
         pwm.set_pwm(channel, 0, pulse)
 
-    def _init_:
+    def _init_(self):
         # Set frequency to 60hz, good for servos.
-        pwm.set_pwm_freq(60)
+        self.pwm.set_pwm_freq(60)
 
     #Melhor configurações necessárias
-    def feedMotion():
-        pwm.set_pwm(0,0,servo_max)
+    def feedMotion(self):
+        self.pwm.set_pwm(0,0,self.servo_max)
         time.sleep(1)
-        pwm.set_pwm(0,0,servo_min)
+        self.pwm.set_pwm(0,0,0)
         time.sleep(1)

@@ -8,7 +8,9 @@ Missing:
 
 
 
-Place in init files: 
+Place in CRONTAB (sudo crontab -e ): 
 
-sudo /usr/bin/Weavedfeeder13000.sh start | stop | restart
-sudo /usr/bin/Weavedssh22.sh start | stop | restart
+@reboot sudo /usr/bin/Weavedfeeder13000.sh start | stop | restart
+@reboot sudo /usr/bin/Weavedssh22.sh start | stop | restart
+@reboot /usr/bin/python /home/pi/CatFeeder/server/feeder_tcp_serverV2.py
+@reboot /usr/bin/python /home/pi/CatFeeder/server/feeder_timer.py

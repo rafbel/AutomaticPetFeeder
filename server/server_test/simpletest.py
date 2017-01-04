@@ -44,3 +44,7 @@ while True:
     time.sleep(1)
     pwm.set_pwm(0, 0, servo_max)
     time.sleep(1)
+    pwm.set_pwm(0,0,0)
+    time.sleep(1)
+    #pwm.set_pwm(0,0,3072)
+    #time.sleep(1)

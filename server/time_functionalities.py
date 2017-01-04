@@ -7,12 +7,13 @@
 #Supporting functionalities:
 def readFromFile():
     #Abre o arquivo para leitura (recebe todos os horarios de alimentação)
-    readFile = open("feed_times.txt",'r')
+    readFile = open("/home/pi/CatFeeder/server/feed_times.txt",'r')
     
     with readFile as it:
         timeArray = []
         for line in it:
-            timeArray.append(int(line))
+	    if (line):
+            	timeArray.append(int(line))
             
     readFile.close()
     return timeArray
