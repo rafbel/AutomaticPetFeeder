@@ -330,7 +330,11 @@ public class feedCon {
                 out.flush();
                 //System.out.println("foi");
                 //awaits reply 
-               
+                BufferedReader in = new BufferedReader(new
+                        InputStreamReader(sock.getInputStream()));
+
+                while (!in.ready()) {}
+                in.readLine();
 
                 return true;
             } catch (IOException ex) {

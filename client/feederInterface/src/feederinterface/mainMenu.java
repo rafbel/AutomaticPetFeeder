@@ -225,7 +225,7 @@ public class mainMenu extends JFrame implements ActionListener{
             String[] listArray = Arrays.copyOf(timeArray,timeArray.length);
             for (int counter = 0; counter < timeArray.length; counter++){
                 StringBuffer sb = new StringBuffer(listArray[counter]);
-                sb.insert(2, ":");
+                sb.insert(listArray[counter].length() - 2, ":");
                 listArray[counter] = sb.toString();
             }
             feedList.setListData(listArray);
