@@ -1,0 +1,41 @@
+Figura 2.1.2 – Fluxograma de operação da camada de transporte do TCP/IP.	8
+Tabela 2.1.1 – Comparação entre os protocolos TCP e UDP		9
+Figura 2.1.3 – Comunicação envio e resposta.		10
+Figura 2.1.4 – Three-way handshake.		11
+Tabela 2.2.1 – Portas oficiais mais conhecidas		13
+Figura 2.2.1 – Exemplo de configuação para o uso da interface sockets em Python		13
+Figura 2.2.1 – Exemplo de configuação para o uso da interface sockets em Python		14
+Figura 2.2.3 – Exemplo de three-way handshake em Python		14
+Tabela 2.2.2 – Comandos e funcionalidades do sistema de alimentação	15
+Figura 2.2.4 –Configuração do receptor do sistema para comunicação	16
+Figura 2.2.5 – Leitura de comandos enviados	17
+Figura 2.2.6 – Programa de comunicação cliente em Python	18
+Figura 2.2.7 – Métodos connect e close do programa cliente	19
+Figura 2.2.8 – Métodos “sendFeed” e “addTime”	20
+Figura 2.2.8 – Métodos “removeTime”,  “changeTime” e “logout”	21
+Figura 2.2.1 – Exemplo de redirecionamento de portas	23
+Figura 2.2.2 – Exemplo de uso de VPN	23
+Figura 2.2.3 – Método login em Python	25
+Figura 2.2.4 – Método login em Java	26
+Figura 2.2.5 – Método list all em Python	27
+Figura 2.2.6 – Método list all em Java	28
+Figura 2.2.7 – Método connect em Python	29
+Figura 2.2.7 – Método connect em Java	30
+Figura 3.1.1 – Configuração da Raspberry Pi (raspi-config)	33
+Figura 3.1.2 – Interface gráfica Raspbian	34
+Figura 3.2.1 – Métodos de leitura e escrita do arquivo	35
+Figura 3.2.2 – Métodos “addTime”, “removeTime” e “changeTime”	36
+Figura 3.3.1 – Script de administração de horários de alimentação	37
+Figura 3.4.1 – Controlador PWM da Adafruit	39
+Figura 3.4.2 – Pinos GPIO da placa Raspberry Pi 2 Modelo B	40
+Figura 3.4.3 – Montagem do circuito do sistema	41
+Figura 3.4.4 – Código Python para controle do servomotor	42
+Figura 4.1.1 – Login no programa de alimentação	43
+Figura 4.1.2 – Usuário não cadastrado/inválido	44
+Figura 4.1.3 – Menu principal	45
+Figura 4.1.4 – Código de inicialização dos elementos gráficos do menu	46
+Figura 4.1.5 – Código que mostra o diálogo de login, passa a ouvir eventos dos elementos e os adiciona ao menu	47
+Figura 4.1.6 – Método desenvolvido para popular a lista de horários	47
+Figura 4.1.7 – Código do listener de eventos	48
+
+

@@ -12,7 +12,7 @@ def readFromFile():
     with readFile as it:
         timeArray = []
         for line in it:
-	    if (line):
+			if (line):
             	timeArray.append(int(line))
             
     readFile.close()

@@ -1,17 +1,22 @@
 package feederinterface;
 
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Arrays;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 
 import javax.swing.JList;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.plaf.FontUIResource;
 
 
 public class mainMenu extends JFrame implements ActionListener{
@@ -39,30 +44,35 @@ public class mainMenu extends JFrame implements ActionListener{
             int ySize = ((int) tk.getScreenSize().getHeight());
             
             setSize(xSize,ySize);
-            
+            //UIManager.put("OptionPane.minimumSize",new Dimension(1200,400));
+            UIManager.put("OptionPane.font", new Font("yourFontName", Font.BOLD, 30));
+            UIManager.put("OptionPane.buttonFont", new FontUIResource(new Font("ARIAL",Font.PLAIN,30)));
             //Button config:
             feedBtn = new JButton("Feed Now");
             feedBtn.setBounds(xSize*2/3,ySize/8,xSize/6,100);
-            
+            feedBtn.setFont(new Font("Verdana", Font.BOLD, 32));
             
             addBtn = new JButton("Add New Feeding Time");
             addBtn.setBounds(xSize*2/3,2*ySize/8,xSize/6,100);
+            addBtn.setFont(new Font("Verdana", Font.BOLD, 32));
             
             
             removeBtn = new JButton("Remove Feeding Time");
             removeBtn.setBounds(xSize*2/3,3*ySize/8,xSize/6,100);
-            
+            removeBtn.setFont(new Font("Verdana", Font.BOLD, 32));
             
             changeBtn = new JButton("Change Feeding Time");
             changeBtn.setBounds(xSize*2/3,4*ySize/8,xSize/6,100);
+            changeBtn.setFont(new Font("Verdana", Font.BOLD, 32));
             
             logoutBtn = new JButton("Logout");
             logoutBtn.setBounds(xSize*2/3,5*ySize/8,xSize/6,100);
-            
+            logoutBtn.setFont(new Font("Verdana", Font.BOLD, 32));
          
             //JList config
             scroll = new JScrollPane();
             feedList = new JList();
+            feedList.setFont(new Font("Verdana", Font.PLAIN, 32));
             scroll.setBounds(xSize/6,ySize/8,xSize/3,ySize*2/3);
             scroll.setViewportView(feedList);
             
@@ -71,11 +81,18 @@ public class mainMenu extends JFrame implements ActionListener{
 		//int option = JOptionPane.showMessageDialog(null,null,"Login",JOptionPane.OK_CANCEL_OPTION);
                 JTextField fldUser = new JTextField(15);
                 JPasswordField fldPass = new JPasswordField(15);
-                
+                //fldUser.setPreferredSize( new Dimension( 300, 50 ) );
+                fldUser.setFont(new Font("Verdana", Font.PLAIN, 32));
+                fldPass.setFont(new Font("Verdana", Font.PLAIN, 32));
+                JLabel lblUser = new JLabel("Username:");
+                lblUser.setFont(new Font("Verdana", Font.PLAIN, 32));
+                JLabel lblPassword = new JLabel("Password:");
+                lblPassword.setFont(new Font("Verdana", Font.PLAIN, 32));
                 Object[] message = {
-                    "Username:", fldUser,
-                    "Password:", fldPass
+                    lblUser, fldUser,
+                    lblPassword, fldPass
                 };
+                
                 boolean reqAuth = true;
                 while (reqAuth){
                     int result = JOptionPane.showConfirmDialog(null, message, 
@@ -133,6 +150,7 @@ public class mainMenu extends JFrame implements ActionListener{
 			int choice;
 			Object[] options = {"Yes", "No"};
 			
+                        
 			choice = JOptionPane.showOptionDialog(null, 
 	            		"Are you sure you want to feed your pets?", 
 	            		"Choose an option", 
@@ -142,16 +160,25 @@ public class mainMenu extends JFrame implements ActionListener{
 	            		options, 
 	            		options[1]);
 			if (choice == 0)
-				if (con.sendFeed())
-					JOptionPane.showMessageDialog(null, "Your pet was fed! Going back to main menu!");
-				else
-					JOptionPane.showMessageDialog(null, "We couldn't reach your device right now! Please try again later!");	
+				if (con.sendFeed()){
+                                    JLabel lblReached = new JLabel("Your pet was fed! Going back to main menu!");
+                                    lblReached.setFont(new Font("Verdana", Font.PLAIN, 32));
+                                    JOptionPane.showMessageDialog(null, lblReached);
+                                }
 					
+                                else{
+                                    JLabel lblNotReached = new JLabel("We couldn't reach your device right now! Please try again later!");
+                                    lblNotReached.setFont(new Font("Verdana", Font.PLAIN, 32));
+					JOptionPane.showMessageDialog(null, lblNotReached);	
+                                }	
 		}
                 else if (event.getSource() == addBtn){ //adds a new feed timer
                     JTextField fldTime = new JTextField(15);
+                    fldTime.setFont(new Font("Verdana", Font.PLAIN, 32));
+                    JLabel lblTime = new JLabel("Time to be added:");
+                    lblTime.setFont(new Font("Verdana", Font.PLAIN, 32));
                     Object[] timeMessage = {
-                        "Time to be added:", fldTime,
+                        lblTime, fldTime,
                     }; 
                     int response = JOptionPane.showConfirmDialog(null, timeMessage, 
                         "Login", JOptionPane.OK_CANCEL_OPTION);
@@ -175,8 +202,11 @@ public class mainMenu extends JFrame implements ActionListener{
                     }
                     else{
                          JTextField fldTime = new JTextField(15);
+                         fldTime.setFont(new Font("Verdana", Font.PLAIN, 32));
+                         JLabel lblTime = new JLabel("TNew feeding time:");
+                        lblTime.setFont(new Font("Verdana", Font.PLAIN, 32));
                         Object[] timeMessage = {
-                            "New feeding time:", fldTime,
+                            lblTime, fldTime,
                         }; 
                         int response = JOptionPane.showConfirmDialog(null, timeMessage, 
                             "Login", JOptionPane.OK_CANCEL_OPTION);
