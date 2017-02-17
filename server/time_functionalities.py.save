@@ -12,29 +12,22 @@ def readFromFile():
     with readFile as it:
         timeArray = []
         for line in it:
-			if (line):
+	    if (line):
             	timeArray.append(int(line))
             
     readFile.close()
     return timeArray
 
 def writeToFile(timeArray):
-    #Writes the time array to the file
-    while (True):
-    	try:
-    		writeFile = open("/home/pi/CatFeeder/server/feed_times.txt",'w')
+    
+	#Writes the time array to the file
+    writeFile = open("feed_times.txt",'w')
 
-    		for timeItem in timeArray:
-        		writeFile.write("%s\n" % (str(timeItem)))
+    for timeItem in timeArray:
+        writeFile.write("%s\n" % (str(timeItem)))
         
-    		writeFile.close()
-		tArray = readFromFile()
-		if (timeArray == tArray):
-			print("equal!")
-			break
-	except:
-		print("unable to write to file")
-		writeFile.close()
+    writeFile.close()
+
 
 #Main functionalities:
 def addTime(timeArray,newTime):
