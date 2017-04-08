@@ -203,7 +203,7 @@ public class mainMenu extends JFrame implements ActionListener{
                     else{
                          JTextField fldTime = new JTextField(15);
                          fldTime.setFont(new Font("Verdana", Font.PLAIN, 32));
-                         JLabel lblTime = new JLabel("TNew feeding time:");
+                         JLabel lblTime = new JLabel("New feeding time:");
                         lblTime.setFont(new Font("Verdana", Font.PLAIN, 32));
                         Object[] timeMessage = {
                             lblTime, fldTime,
